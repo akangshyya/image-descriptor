@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./Image-Descriptor-ML",
+        "./hazardous-object-detection"
+    ]
+}
