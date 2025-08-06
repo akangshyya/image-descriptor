@@ -1,4 +1,4 @@
-# SNBose Project
+# Voice Descriptor for VIsually Impaired People
 
 This project contains code and resources for machine learning and object detection tasks, organized into the following main components:
 
@@ -46,6 +46,4 @@ This project contains code and resources for machine learning and object detecti
 
 Feel free to submit issues or pull requests to improve the project.
 
-## License
 
-Specify your license here (e.g.,
