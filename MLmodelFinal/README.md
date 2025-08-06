@@ -37,7 +37,7 @@ hazardous-object-detection/
 ```
 ##🛠️ Setup & Usage
 1. Clone the repo
-git clone [https://github.com/vishnu2005/hazardous-object-detection.git](https://github.com/akangshyya/image-captioning-for-hazardous-objects)
+git clone [https://github.com/akangshyya/image-captioning-for-hazardous-objects](https://github.com/akangshyya/image-captioning-for-hazardous-objects)
 cd hazardous-object-detection
 
 3. Install dependencies
