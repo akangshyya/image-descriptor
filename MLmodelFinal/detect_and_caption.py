@@ -21,9 +21,9 @@ class MultilingualYOLODetector:
         # Load YOLO model
         try:
             self.model = YOLO(model_path)
-            print(f"✅ YOLO model loaded successfully from {model_path}")
+            print(f"YOLO model loaded successfully from {model_path}")
         except Exception as e:
-            print(f"❌ Failed to load YOLO model: {e}")
+            print(f"Failed to load YOLO model: {e}")
             raise
         
         # Define supported languages
@@ -36,8 +36,8 @@ class MultilingualYOLODetector:
             "Malayalam": "ml"
         }
         
-        print(f"🔊 Audio output directory: {self.audio_output_dir}")
-        print(f"🌍 Supported languages: {list(self.languages.keys())}")
+        print(f"Audio output directory: {self.audio_output_dir}")
+        print(f"Supported languages: {list(self.languages.keys())}")
     
     def play_audio_pygame(self, audio_path):
         """Play audio using pygame"""
@@ -51,7 +51,7 @@ class MultilingualYOLODetector:
             
             return True
         except Exception as e:
-            print(f"❌ Pygame audio playback failed: {e}")
+            print(f" Pygame audio playback failed: {e}")
             return False
     
     def play_audio_winsound(self, audio_path):
@@ -63,7 +63,7 @@ class MultilingualYOLODetector:
                 return True
             return False
         except Exception as e:
-            print(f"❌ Winsound audio playback failed: {e}")
+            print(f" Winsound audio playback failed: {e}")
             return False
     
     def play_audio_system(self, audio_path):
@@ -80,7 +80,7 @@ class MultilingualYOLODetector:
             time.sleep(2)  # Give time for audio to play
             return True
         except Exception as e:
-            print(f"❌ System audio playback failed: {e}")
+            print(f" System audio playback failed: {e}")
             return False
     
     def play_audio(self, audio_path):
@@ -95,7 +95,7 @@ class MultilingualYOLODetector:
             if method(audio_path):
                 return True
         
-        print(f"❌ All audio playback methods failed for {audio_path}")
+        print(f" All audio playback methods failed for {audio_path}")
         return False
     
     def detect_objects(self, image_path, confidence_threshold=0.4):
@@ -104,7 +104,7 @@ class MultilingualYOLODetector:
         captions = []
         
         if frame is None:
-            print(f"❌ Image not loaded. Check path: {image_path}")
+            print(f" Image not loaded. Check path: {image_path}")
             return captions
         
         print(f"📸 Processing image: {image_path}")
@@ -158,7 +158,7 @@ class MultilingualYOLODetector:
             tts.save(audio_path)
             return audio_path
         except Exception as e:
-            print(f"❌ TTS generation failed: {e}")
+            print(f" TTS generation failed: {e}")
             return None
     
     def process_image_multilingual(self, image_path, play_audio=True, save_audio=True):
@@ -167,7 +167,7 @@ class MultilingualYOLODetector:
         captions = self.detect_objects(image_path)
         
         if not captions:
-            print("❌ No objects detected in the image.")
+            print(" No objects detected in the image.")
             return
         
         print(f"\n🎯 Detected {len(captions)} objects\n")
@@ -182,15 +182,15 @@ class MultilingualYOLODetector:
             if save_audio:
                 audio_path = self.generate_tts(text, 'en', f"english_{idx}.mp3")
                 if audio_path and play_audio:
-                    print(f"🔊 Playing English audio {idx+1}...")
+                    print(f" Playing English audio {idx+1}...")
                     self.play_audio(audio_path)
                     time.sleep(0.5)
         
         # Process translated captions
-        print("\n🌍 [Translated Captions + TTS]:\n")
+        print("\n [Translated Captions + TTS]:\n")
         
         for lang_name, lang_code in self.languages.items():
-            print(f"\n🗣️ [{lang_name}]")
+            print(f"\n [{lang_name}]")
             
             for idx, caption_info in enumerate(captions):
                 english_text = caption_info['text']
@@ -205,12 +205,12 @@ class MultilingualYOLODetector:
                         audio_path = self.generate_tts(translated, lang_code, f"{lang_name}_{idx}.mp3")
                         
                         if audio_path and play_audio:
-                            print(f"🔊 Playing {lang_name} audio {idx+1}...")
+                            print(f" Playing {lang_name} audio {idx+1}...")
                             self.play_audio(audio_path)
                             time.sleep(0.5)
                 
                 except Exception as e:
-                    print(f"❌ Translation/TTS failed for {lang_name}: {e}")
+                    print(f" Translation/TTS failed for {lang_name}: {e}")
     
     def batch_process(self, image_folder, play_audio=False, save_audio=True):
         """Process multiple images in a folder"""
@@ -220,10 +220,10 @@ class MultilingualYOLODetector:
                       if f.lower().endswith(supported_formats)]
         
         if not image_files:
-            print(f"❌ No supported image files found in {image_folder}")
+            print(f" No supported image files found in {image_folder}")
             return
         
-        print(f"📁 Processing {len(image_files)} images from {image_folder}")
+        print(f" Processing {len(image_files)} images from {image_folder}")
         
         for idx, filename in enumerate(image_files):
             image_path = os.path.join(image_folder, filename)
@@ -248,7 +248,7 @@ class MultilingualYOLODetector:
 
 def main():
     """Main function for interactive use"""
-    print("🚀 Multilingual YOLO Object Detection System")
+    print(" Multilingual YOLO Object Detection System")
     print("=" * 50)
     
     # Configuration
@@ -257,7 +257,7 @@ def main():
     
     # Check if model exists
     if not os.path.exists(model_path):
-        print(f"❌ Model file not found: {model_path}")
+        print(f" Model file not found: {model_path}")
         print("Please ensure your YOLO model file exists and update the model_path variable.")
         return
     
@@ -265,11 +265,11 @@ def main():
     try:
         detector = MultilingualYOLODetector(model_path)
     except Exception as e:
-        print(f"❌ Failed to initialize detector: {e}")
+        print(f" Failed to initialize detector: {e}")
         return
     
     while True:
-        print("\n📋 Options:")
+        print("\n Options:")
         print("1. Process single image (with audio)")
         print("2. Process single image (silent)")
         print("3. Batch process folder")
@@ -286,7 +286,7 @@ def main():
             if os.path.exists(img_path):
                 detector.process_image_multilingual(img_path, play_audio=True, save_audio=True)
             else:
-                print(f"❌ Image not found: {img_path}")
+                print(f" Image not found: {img_path}")
         
         elif choice == '2':
             img_path = input(f"Enter image path (or press Enter for default: {default_image}): ").strip()
@@ -296,7 +296,7 @@ def main():
             if os.path.exists(img_path):
                 detector.process_image_multilingual(img_path, play_audio=False, save_audio=True)
             else:
-                print(f"❌ Image not found: {img_path}")
+                print(f" Image not found: {img_path}")
         
         elif choice == '3':
             folder_path = input("Enter folder path: ").strip()
@@ -304,7 +304,7 @@ def main():
                 play_audio = input("Play audio during processing? (y/n): ").strip().lower() == 'y'
                 detector.batch_process(folder_path, play_audio=play_audio)
             else:
-                print(f"❌ Folder not found: {folder_path}")
+                print(f" Folder not found: {folder_path}")
         
         elif choice == '4':
             img_path = input(f"Enter image path (or press Enter for default: {default_image}): ").strip()
@@ -313,20 +313,20 @@ def main():
             
             if os.path.exists(img_path):
                 summary = detector.get_detection_summary(img_path)
-                print(f"\n📊 Detection Summary:\n{summary}")
+                print(f"\n Detection Summary:\n{summary}")
             else:
-                print(f"❌ Image not found: {img_path}")
+                print(f" Image not found: {img_path}")
         
         elif choice == '5':
-            print("👋 Goodbye!")
+            print(" Goodbye!")
             break
         
         else:
-            print("❌ Invalid choice! Please try again.")
+            print(" Invalid choice! Please try again.")
 
 if __name__ == "__main__":
     # Required packages
-    print("📦 Required packages:")
+    print(" Required packages:")
     print("pip install ultralytics opencv-python deep-translator gtts pygame")
     print("\nMake sure you have:")
     print("1. A trained YOLO model file (best.pt)")
