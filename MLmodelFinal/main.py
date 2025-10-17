@@ -80,7 +80,7 @@ class MultilingualImageToSpeech:
             model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
             self.translation_tokenizers[lang] = tokenizer
             self.translation_models[lang] = model
-            print(f"✅ Loaded {lang} translation model")
+            print(f" Loaded {lang} translation model")
         except Exception as e:
             print(f"⚠ Could not load {lang} model: {e}")
             self.translation_tokenizers[lang] = None
@@ -97,7 +97,7 @@ class MultilingualImageToSpeech:
                 'telugu': 'tel_Telu', 
                 'tamil': 'tam_Taml'
             }
-            print("✅ Loaded NLLB translation model")
+            print(" Loaded NLLB translation model")
         except Exception as e:
             print(f"⚠ Could not load NLLB model: {e}")
 
@@ -232,7 +232,7 @@ class MultilingualImageToSpeech:
                 with torch.no_grad():
                     outputs = model.generate(**inputs, max_length=128, num_beams=4)
                 translated = tokenizer.decode(outputs[0], skip_special_tokens=True)
-                print(f"✅ Translated to {target_language}: {translated}")
+                print(f" Translated to {target_language}: {translated}")
                 return translated
 
             elif lang_key in self.nllb_lang_codes:
@@ -244,7 +244,7 @@ class MultilingualImageToSpeech:
                 encoded = tokenizer(text, return_tensors="pt")
                 generated = model.generate(**encoded, forced_bos_token_id=tokenizer.convert_tokens_to_ids(tgt_lang))
                 translated = tokenizer.batch_decode(generated, skip_special_tokens=True)[0]
-                print(f"✅ Translated to {target_language}: {translated}")
+                print(f" Translated to {target_language}: {translated}")
                 return translated
 
             else:
@@ -252,14 +252,14 @@ class MultilingualImageToSpeech:
                 return text
 
         except Exception as e:
-            print(f"❌ Translation failed for {target_language}: {e}")
+            print(f" Translation failed for {target_language}: {e}")
             return text
 
     def generate_tts_audio_base64(self, text, language_code):
         """Generate TTS audio and return as base64 string"""
         try:
             if language_code not in self.tts_supported:
-                print(f"❌ TTS generation failed: Language not supported by gTTS: {language_code}")
+                print(f" TTS generation failed: Language not supported by gTTS: {language_code}")
                 return None
                 
             # Create TTS object
@@ -273,25 +273,25 @@ class MultilingualImageToSpeech:
             # Convert to base64
             audio_base64 = base64.b64encode(audio_buffer.read()).decode('utf-8')
             
-            print(f"✅ Generated TTS audio for {language_code}, length: {len(audio_base64)} chars")
+            print(f" Generated TTS audio for {language_code}, length: {len(audio_base64)} chars")
             return audio_base64
             
         except Exception as e:
-            print(f"❌ TTS generation failed for {language_code}: {e}")
+            print(f" TTS generation failed for {language_code}: {e}")
             return None
 
     def generate_tts_audio(self, text, language_code, filename):
         """Generate TTS audio file (legacy method for local testing)"""
         try:
             if language_code not in self.tts_supported:
-                print(f"❌ TTS generation failed: Language not supported by gTTS: {language_code}")
+                print(f" TTS generation failed: Language not supported by gTTS: {language_code}")
                 return None
             tts = gTTS(text=text, lang=language_code, slow=False)
             audio_path = os.path.join(self.audio_output_dir, filename)
             tts.save(audio_path)
             return audio_path
         except Exception as e:
-            print(f"❌ TTS generation failed: {e}")
+            print(f" TTS generation failed: {e}")
             return None
 
     def play_audio(self, audio_path):
@@ -302,7 +302,7 @@ class MultilingualImageToSpeech:
                 pygame.time.wait(100)
             return True
         except Exception as e:
-            print(f"❌ Audio playback failed: {e}")
+            print(f" Audio playback failed: {e}")
             return False
 
     def text_to_speech(self, text, language='english', save_audio=True, play_audio=True):
@@ -336,16 +336,16 @@ class MultilingualImageToSpeech:
         if image is None:
             return results
 
-        print(f"\n🖼️ Processing image: {image_path}")
-        print(f"📏 Image size: {image.size}")
+        print(f"\n Processing image: {image_path}")
+        print(f" Image size: {image.size}")
         
         english_caption = self.generate_caption(image)
-        print(f"\n📝 Final English Caption: {english_caption}")
+        print(f"\n Final English Caption: {english_caption}")
 
         for lang in languages:
-            print(f"\n🔄 Processing {lang}...")
+            print(f"\n Processing {lang}...")
             translation = self.translate_text(english_caption, lang)
-            print(f"🌍 {lang.title()} Translation: {translation}")
+            print(f" {lang.title()} Translation: {translation}")
             
             # Generate audio
             lang_code = self.lang_codes.get(lang.lower(), 'en')
